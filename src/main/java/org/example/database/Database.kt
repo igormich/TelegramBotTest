@@ -13,21 +13,18 @@ import org.jetbrains.exposed.dao.id.LongIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
+object TelegramUsers : LongIdTable() {
+    val userId = reference("userId", UserSessions)
+}
+
 object UserSessions : IntIdTable() {
     val state = enumeration("state", UserState::class).default(UserState.NEW_BEE)
     val name = varchar("name", 32).default("")
     val profile = varchar("profile", 256).default("")
 }
 
-object TelegramUsers : LongIdTable() {
-    //val id = long("id")
-    val userId = reference("userId", UserSessions)
-    //override val primaryKey = PrimaryKey(id, name = "PK_Cities_ID")
-}
-
 class DatabaseUserSession(id: EntityID<Int>) : IntEntity(id), UserSession {
     companion object : IntEntityClass<DatabaseUserSession>(UserSessions)
-
     private var _state by UserSessions.state
     private var _name by UserSessions.name
     private var _profile by UserSessions.profile
@@ -67,5 +64,4 @@ object DatabaseUserProvider:UserProvider {
         }
         throw IllegalStateException("Only Telegram support now")
     }
-
 }
