@@ -5,10 +5,11 @@ import org.example.users.UserId;
 import java.util.Objects;
 
 public class TelegramUserId implements UserId {
+
+
     private final Long id;
 
     public TelegramUserId(Long id){
-
         this.id = id;
     }
 
@@ -23,5 +24,8 @@ public class TelegramUserId implements UserId {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+    public Long getId() {
+        return id;
     }
 }
